@@ -1,0 +1,11 @@
+::-webkit-input-placeholder { /* Edge */
+    color: white !important;
+}
+
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: white !important;
+}
+
+input::placeholder {
+    color: white !important;
+}

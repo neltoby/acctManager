@@ -29,8 +29,27 @@ export const LOADING_TRANS_VIEW = 'LOADING_TRANS_VIEW'
 export const TRANS_TYPE = 'TRANS_TYPE'
 export const DIALOG_OPEN = 'DIALOG_OPEN'
 export const DIALOG_CLOSE = 'DIALOG_CLOSE'
+export const SET_EXPIRED_TIME = 'SET_EXPIRED_TIME'
+export const SELECT_KEY_TIME = 'SELECT_KEY_TIME'
+export const SELECT_KEY_TIME_CANCEL = 'SELECT_KEY_TIME_CANCEL'
 export const STOP_LOADING_TRANS_VIEW = 'STOP_LOADING_TRANS_VIEW'
 
+export const setExpiredTime = payload => {
+    return {
+        type: SET_EXPIRED_TIME,
+        payload: payload
+    }
+}
+export const selectKeyTime = () => {
+    return {
+        type: SELECT_KEY_TIME,
+    }
+}
+export const selectKeyTimeCancel = () => {
+    return {
+        type: SELECT_KEY_TIME_CANCEL,
+    }
+}
 export const closeDialog = () => {
     return {
         type: DIALOG_CLOSE,

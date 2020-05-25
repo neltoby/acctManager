@@ -36,6 +36,15 @@ const useStyles = makeStyles(theme => ({
             fontSize: '0.9rem',
         },
     },
+    overlayContainer: {
+        width: '85%',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: '100%',
+        backgroundColor: '#fff',
+        overflow: 'scroll',
+    },
     but: {
         display: 'flex',
         flexGrow: 1,
@@ -78,7 +87,7 @@ const Side = (props) => {
     console.log(home)
     const content = home.bank.length ? <><Typography variant='body1' className={classes.bold}>
     YOUR {home.bank.length > 1 ? 'ACCOUNTS' : 'ACCOUNT'}
-</Typography><UserBank/></> : <GeneralInfo/> ;
+</Typography><UserBank {...props}/></> : <GeneralInfo/> ;
     let size = props.overlay ? '1em' : '2em';
     const history = useHistory();
     const direct = location => {
@@ -90,9 +99,30 @@ const Side = (props) => {
             }, 1000);
         return () => clearInterval(interval)       
     })
+    let contentProperty = (
+        <>
+            <div className={classes.but}>
+                <Button 
+                    fullWidth={true} 
+                    className={classes.invoice}
+                    onClick={() => direct('/open-account')}
+                >
+                    OPEN AN ACCOUNT 
+                </Button>
+            </div>
     
+            <IconContext.Provider value={{ className: 'ul-icon', size: size, color: '#004d4d' }}>
+                {content}
+            </IconContext.Provider>
+        </>
+    )
+
     return (
         <>
+            {props.overlay ? 
+            <div className={classes.overlayContainer}>
+                {contentProperty}
+            </div> : 
             <Grid item md={3} className={classes.root}>
                 <div className={classes.container} >
                     <Box
@@ -102,22 +132,11 @@ const Side = (props) => {
                         p={1}
                         style={{ width: '100%', height: '100%', overflowY: 'scroll',paddingBottom: '0',marginBottom: '0' }}
                     >
-                        <div className={classes.but}>
-                            <Button 
-                                fullWidth={true} 
-                                className={classes.invoice}
-                                onClick={() => direct('/open-account')}
-                            >
-                               OPEN AN ACCOUNT 
-                            </Button>
-                        </div>
-                
-                        <IconContext.Provider value={{ className: 'ul-icon', size: size, color: '#004d4d' }}>
-                            {content}
-                        </IconContext.Provider>
+                        {contentProperty}
                     </Box>
-                </div>    
+                </div>
             </Grid>
+            }
             
         </>
     );

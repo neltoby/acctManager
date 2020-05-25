@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
+import {removeSideBar} from '../action'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,10 +23,14 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const UserBank = () => {
+const UserBank = (props) => {
     const classes = useStyles();
     const history = useHistory()
+    const dispatch = useDispatch()
     const store =isJson (useSelector(state => state));
+    const overlayFxn = () => {
+        dispatch(removeSideBar())
+    }
     return (
         <>
             <Grid item md={12} className={classes.root}>
@@ -35,7 +40,7 @@ const UserBank = () => {
                         return(
                             <ListItem
                                 button
-                                onClick={() => history.push(`/bank/${item.Country}/${loc}/${item.Acct}`)}
+                                onClick={props.overlay ? () => {history.push(`/bank/${item.Country}/${loc}/${item.Acct}`); overlayFxn();} : () => history.push(`/bank/${item.Country}/${loc}/${item.Acct}`)}
                             >
                                 <ListItemText 
                                     primary={item.Bank} 

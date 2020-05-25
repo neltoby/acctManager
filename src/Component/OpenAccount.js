@@ -4,6 +4,8 @@ import {useHistory} from 'react-router-dom'
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import SideModal from './SideModal'
+import Side from './Side'
 import Typography from "@material-ui/core/Typography";
 import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
@@ -15,6 +17,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Money from '@material-ui/icons/Money' 
 import Avatar from '@material-ui/core/Avatar';
+import BackComponent from './BackComponent';
 import first from '../BanksLogo/FirstBank.png'
 import providus from '../BanksLogo/providusBank.jpg'
 import polaris from '../BanksLogo/polaris.png'
@@ -30,7 +33,7 @@ import uba from '../BanksLogo/UBA.jpg'
 import wema from '../BanksLogo/Wema-Bank.jpg'
 import union from '../BanksLogo/unionBank.png'
 import zenith from '../BanksLogo/ZenithBank.jpg'
-import {openAcct} from '../action'
+import {openAcct, removeSideBar} from '../action'
 import isJson  from '../isJson'
 
 const ColorCircularProgress = withStyles({
@@ -52,7 +55,10 @@ const BlueCheckbox = withStyles({
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
-        marginLeft: '2rem'
+        marginLeft: '2rem',
+        [theme.breakpoints.down('md')]: {
+            marginLeft: 0
+        }
     },
     center: {
         alignItems: 'center',
@@ -65,6 +71,9 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         height: '65vh',
         width: '70%',
+        [theme.breakpoints.down('md')]: {
+            width: '100%',
+        }
     },
     heading: {
         padding: theme.spacing(2),
@@ -256,8 +265,8 @@ const OpenAccount = () => {
         <>
             <div className={ab.root}>
                 <Grid container spacing={2} className={ab.root}>
-                    <Grid item md={3} className={ab.left}></Grid>
-                    <Grid item container md={6} className={ab.center}>
+                    <Grid item md={3} sm={1} xs={1} className={ab.left}></Grid>
+                    <Grid item container md={6} sm={10} xs={10} className={ab.center}>
                         <Paper square elevation={3} className={ab.header} >
                             <Paper className={ab.heading}>
                                 <Typography component='div' className={ab.selected}>
@@ -356,8 +365,10 @@ const OpenAccount = () => {
                             {backButton}<Button className={ab.button} disabled={disabled} onClick={fxn}> {next}</Button>
                         </div>
                     </Grid>
-                    <Grid item md={3} className={ab.right}></Grid>
+                    <Grid item md={3} sm={1} xs={1} className={ab.right}></Grid>
                 </Grid>
+                    <BackComponent />
+                {store.home.side ? <SideModal close={() => dispatch(removeSideBar())}><Side overlay={true} /></SideModal> : '' }
             </div>
         </>
     );

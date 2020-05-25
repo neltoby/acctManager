@@ -3,7 +3,8 @@ import produce from 'immer'
 import { B_LOAD_STOP, B_ERR_TRUE, B_READY, GEN_KEY_LOADING, KEY_STOP_LOADING, GEN_KEY, DIALOG_OPEN,
     TRANS_LOADING, TRANS_LOADING_STOP, TRANS_ERR, MERGED_SAVING, MERGED_SAVING_FALSE, CANCEL_TRANS,
     TRANS_SUCCESS, CONFIRM_TRANS, END_TRANS, EXPIRED_KEY, UPDATE_KEY, TOP_UP_LOADING, DIALOG_CLOSE,
-    STOP_TOP_UP_LOADING, TRANS_TYPE, LOADING_TRANS_VIEW, UPDATE_TRANS_RESULT,STOP_LOADING_TRANS_VIEW } from '../b_action'
+    STOP_TOP_UP_LOADING, TRANS_TYPE, LOADING_TRANS_VIEW, UPDATE_TRANS_RESULT,STOP_LOADING_TRANS_VIEW, 
+    SELECT_KEY_TIME, SELECT_KEY_TIME_CANCEL, SET_EXPIRED_TIME } from '../b_action'
 import { SET_BANKS, GETBANKS, CHECK_DISPLAY, CHECK_DISPLAY_FALSE, ACCOUNT_BAL, CHECK_BAL_ERR,
     CHECK_BAL_LOADING, CHECK_BAL_LOADING_STOP, STATEMENT_ACCESS, STATEMENT_DENIED, STATEMENT,
     STATEMENT_LOADING, STATEMENT_LOADING_STOP, STATEMENT_ERR } from '../action'
@@ -22,7 +23,7 @@ const initialState = {
     merged: false,
     transConfirm: {},
     success: false,
-    expires: '1 hr',
+    expires: '',
     topUp: {transLoading: false},
     transType: {type:'', val: ''},
     loadingTransView: false,
@@ -37,11 +38,27 @@ const initialState = {
     statement: {},
     statementLoading: false,
     statementErr: '',
+    selectKeyTime: false,
 }
 
 export default function transReducer(state = initialState, action) {
     console.log(state.statement)
-    switch (action.type){ 
+    switch (action.type){  
+        case SET_EXPIRED_TIME: {
+            return produce(state, draft => {	
+                draft.expires= action.payload     
+			})
+        }      
+        case SELECT_KEY_TIME: {
+            return produce(state, draft => {	
+                draft.selectKeyTime= true ;	    
+			})
+        }
+        case SELECT_KEY_TIME_CANCEL: {
+            return produce(state, draft => {	
+                draft.selectKeyTime= false ;	    
+			})
+        }
         case STATEMENT_ERR: {
             return produce(state, draft => {	
                 draft.statementErr = action.payload ;	    

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import useFindacct from './useFindacct';
-import {genKey, confirmKeys, generateKey} from '../b_action'
+import {genKey, confirmKeys, generateKey,selectKeyTime} from '../b_action'
 import isJson from '../isJson'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Button from '@material-ui/core/Button'
+import TransitionsModal from './Modal'
+import SelectTime from './SelectTime'
 import NoEncryption from '@material-ui/icons/NoEncryption'
 import VpnKey from '@material-ui/icons/VpnKey'
 import {makeStyles, withStyles} from "@material-ui/core/styles"
@@ -61,17 +63,21 @@ const useGenkey = (acct) => {
     //     console.log(id)
     //     confirmKey()
     // },[id])
-    const generate = () => {
+    const generate = (time) => {
         if(id.length){
             try{
                 let obj={uid: id[0].User, bid: id[0].Id}
-                let time = store.trans.expires
+                // let time = store.trans.expires
+                console.log(time)
                 dispatch(genKey(obj,time, acctToken))
             }catch(e){
                 console.log(e)
             }
         }      
     } 
+    const openGenerate = () => {
+        dispatch(selectKeyTime())
+    }
     const confirmKey = () => {
         if(cookies.get(acctToken)){
             let obj = {bid: id[0].Id}
@@ -82,9 +88,14 @@ const useGenkey = (acct) => {
     } 
     const buttonKey = () => {
         return(
-            <Button className={ab.get_key} onClick={generate}>
+            <>
+            <Button className={ab.get_key} onClick={openGenerate}>
                 {store.trans.genKeyLoading ? <ColorCircularProgress size={20} /> :  'Generate key' }
             </Button>
+            <TransitionsModal open={store.trans.selectKeyTime}>
+                <SelectTime generate={generate} />
+            </TransitionsModal>
+            </>
         )
     }
     const icons = () => {

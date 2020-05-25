@@ -286,7 +286,7 @@ const Footer = () => {
                     &copy;Copyright 2020
                 </Typography>
                 <Typography variant='body1' className={ab.small}>
-                    Office: 01-7654672
+                    Office: 09036521234
                 </Typography>
                 <Typography variant='body1' className={ab.small}>
                     Customer Care: 09000067000

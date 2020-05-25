@@ -140,7 +140,7 @@ const BankHeader = (props) => {
                             Top Up 
                     </Route>
                     <Route path={`${url}/statement`}>
-                            Statement of Account
+                            Statement 
                     </Route>
                 </Switch>
                 </Grid>

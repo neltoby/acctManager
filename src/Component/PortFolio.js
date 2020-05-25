@@ -10,6 +10,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 // import Slide from '@material-ui/core/Slide';
+import SideModal from './SideModal'
+import Side from './Side'
 import Typography from "@material-ui/core/Typography";
 import Mood from '@material-ui/icons/Mood'
 import AccountBalance from '@material-ui/icons/AccountBalance'
@@ -36,6 +38,8 @@ import union from '../BanksLogo/unionBank.png'
 import zenith from '../BanksLogo/ZenithBank.jpg'
 import man from  '../BanksLogo/excitedman.webp'
 import manWith from  '../BanksLogo/manWith.webp'
+import { useDispatch, useSelector } from 'react-redux';
+import {removeSideBar} from '../action'
 
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -203,6 +207,8 @@ const useStyles = makeStyles(theme => ({
 
 const PortFolio = () => {
     const classes = useStyles();
+    const dispatch = useDispatch()
+    const store = useSelector(state => state)
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = tutorialSteps.length;
@@ -217,7 +223,7 @@ const PortFolio = () => {
 
     const handleStepChange = step => {
         setActiveStep(step);
-    };
+    } 
     return (
         <Grid item container md={9} xs={12} className={classes.roots}>
                 {/* <div className={classes.container}> */}
@@ -339,6 +345,7 @@ const PortFolio = () => {
                         </Grid>
                     </Box>
                 {/* </div> */}
+                {store.home.side ? <SideModal close={() => dispatch(removeSideBar())}><Side overlay={true} /></SideModal> : '' }
             </Grid>
     );
 };

@@ -258,7 +258,6 @@ export const sendComplain = (text) => {
                 //     }, 3000);
                 // }
             }, (error) => {
-                console.log(error.response)
                 let payload = `${error.response.status}: ${error.response.statusText}` || 'Unable to connect to server'
                 dispatch(checkBalErr(payload))
                 dispatch(checkBalLoadingStop())
@@ -270,12 +269,10 @@ export const sendComplain = (text) => {
 }
 export const checkStatement = (acct, info) => {
     return function(dispatch, getState) {
-        console.log(acct, info)
         dispatch(statementLoading());
         return axios.post('http://localhost:3000/statement', info, {headers: {'x-key': cookies.get(acct), 'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){            
                     if(res.data.keyMsg || res.data.nonMsg){
                         dispatch(statementErr(res.data.keyMsg || res.data.nonMsg))
@@ -295,7 +292,6 @@ export const checkStatement = (acct, info) => {
                         else{
                             dispatch(statement(isJson(res.data.report)))
                             dispatch(statementLoadingStop())
-                            console.log(res.data.report.bid)
                             dispatch(statementAccess(res.data.report.bid))                
                         }                       
                     }             
@@ -307,7 +303,6 @@ export const checkStatement = (acct, info) => {
                     }, 3000);
                 }
             }, (error) => {
-                console.log(error.response)
                 let payload = `${error.response.status}: ${error.response.statusText}` || 'Unable to connect to server'
                 dispatch(statementErr(payload))
                 dispatch(statementLoadingStop())
@@ -323,7 +318,6 @@ export const checkBal = (acct, info) => {
         return axios.post('http://localhost:3000/check-bal', info, {headers: {'x-key': cookies.get(acct), 'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){            
                     if(res.data.keyMsg || res.data.nonMsg){
                         dispatch(checkBalErr(res.data.keyMsg || res.data.nonMsg))
@@ -353,7 +347,6 @@ export const checkBal = (acct, info) => {
                     }, 3000);
                 }
             }, (error) => {
-                console.log(error.response)
                 let payload = `${error.response.status}: ${error.response.statusText}` || 'Unable to connect to server'
                 dispatch(checkBalErr(payload))
                 dispatch(checkBalLoadingStop())
@@ -363,55 +356,25 @@ export const checkBal = (acct, info) => {
         });
     }
 }
-export const getTransaction = () => {
-    return function(dispatch, getState) {
-        dispatch(loadTransaction());
-        return axios.get('http://localhost:3000/getTransaction', {headers: {'x-token': cookies.get('login')}})
-        .then((response) => {
-            let res = isJson(response);
-            console.log(res)
-            if(res.data.status){            
-                // let payload = res.data.res
-                // console.log(payload)
-                // dispatch(getbank(payload));              
-            }else{
-                if(!res.data.tok){
-                    // dispatch(invalidToken(res.data.msg))
-                    // cookies.remove('login')
-                }                 
-                // dispatch(stopBankLoading())                         
-            }
-            console.log(response);
-        }, (error) => {
-            // dispatch(stopBankLoading());
-            console.log(error);
-        });
-    };
-}
 export const getbankFxn = () => {
     return function(dispatch, getState) {
         dispatch(getBankLoading());
         return axios.get('http://localhost:3000/getbank', {headers: {'x-token': cookies.get('login')}})
         .then((response) => {
             let res = isJson(response);
-            console.log(res)
             if(res.data.status){            
                 let payload = {bank: res.data.bank, transaction: res.data.transaction, user: res.data.user}
-                console.log(payload)
                 dispatch(getbank(payload)); 
                 dispatch(setBank(res.data.country))             
             }else{
                 if(!res.data.tok){
                     dispatch(invalidToken(res.data.msg))
                     cookies.remove('login')
-                }                 
-                // dispatch(stopBankLoading())                         
+                }                                         
             }
             dispatch(stopBankLoading())  
-            console.log(response);
         }, (error) => {
             dispatch(stopBankLoading());
-            console.log(error);
         });
     };
 }
@@ -437,13 +400,11 @@ export const createAcct = (formData,history) => {
                     dispatch(login());
                     dispatch(endloading());
                     history.push('/')
-                }, 2000);           
+                }, 1000);           
                 
             }
-            console.log(response);
         }, (error) => {
             dispatch(endloading());
-            console.log(error);
         });
     };
 }
@@ -461,22 +422,19 @@ export const retrieveToken = (formData, history, location) => {
                     dispatch(endloading());
                     setTimeout(() => {
                         dispatch(release());
-                    }, 2000);
-                }, 2000);
+                    }, 1000);
+                }, 1000);
                 
             }else{    
                 setTimeout(() => {
                     cookies.set('login', res.data.token, { path: '/'})
                     dispatch(validToken());
                     dispatch(endloading());
-                    // history.push(location.pathname)
                 }, 1000);           
                 
             }
-            console.log(response);
         }, (error) => {
             dispatch(endloading());
-            console.log(error);
         });
     };
 }
@@ -486,7 +444,6 @@ export const loginAcct = (formData,history) => {
         return axios.post('http://localhost:3000/login',formData )
         .then((response) => {
             let res = isJson(response);
-            console.log(res)
             if(!res.data.status){
                 setTimeout(() => {
                     let payload = {name: res.data.name, msg: res.data.msg}
@@ -494,23 +451,20 @@ export const loginAcct = (formData,history) => {
                     dispatch(endloading());
                     setTimeout(() => {
                         dispatch(release());
-                    }, 4000);
-                }, 2000);
+                    }, 2000);
+                }, 1000);
                 
             }else{    
                 setTimeout(() => {
                     cookies.set('login', res.data.token, { path: '/'})
                     dispatch(login());
                     dispatch(endloading());
-                    console.log(history)
                     history.push('/')
-                }, 2000);           
+                }, 1000);           
                 
             }
-            console.log(response);
         }, (error) => {
             dispatch(endloading());
-            console.log(error);
         });
     };
 }
@@ -519,7 +473,6 @@ export const openAcct = (formData,history) => {
         return axios.post('http://localhost:3000/open-account',formData, {headers: {'x-token': cookies.get('login')}} )
         .then((response) => {
             let res = isJson(response);
-            console.log(res)
             if(res.data.status){
                 dispatch(updateBank(res.data.res));
                 setTimeout(() => {
@@ -535,10 +488,8 @@ export const openAcct = (formData,history) => {
                 dispatch(openAcctErr(res.data.msg));          
                 
             }
-            console.log(response);
         }, (error) => {
             dispatch(openAcctErr(error));  
-            console.log(error);
         });
     };
 }

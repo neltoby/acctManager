@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import {makeStyles, useTheme} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import {useSelector, useDispatch} from 'react-redux'
 import isJson from '../isJson';
 import { useParams,useRouteMatch } from 'react-router-dom'
 import { Route, Switch } from 'react-router-dom'
 import AllAccount from './AllAccount'
-import axios from 'axios'
-import { errTrue, bReady, stopLoad } from '../b_action'
+import { errTrue } from '../b_action'
 
 const useStyles = makeStyles(theme => ({
     broot: {
@@ -40,25 +39,18 @@ const DisplayTrans = () => {
                 if(b.country === country){
                     if(b.banks.includes(newBank)){
                         obj = [...obj, b ]
-                        console.log(obj)
+
                     }else{
                         error = `${bank} and ${country} do not match` 
                     }                
                 }
             });
-            if(obj.length){
-                // dispatch(bReady())
-                console.log(obj)
-            }else{
-                
-                    if(!error) {
-                        error = `Incorrect country match`
-                    }
-                    dispatch(errTrue(error))
-                
+            if(!obj.length){
+                if(!error) {
+                    error = `Incorrect country match`
+                }
+                dispatch(errTrue(error))
             }
-            // dispatch(stopLoad())
-            console.log(store)
         }
     },[])
     return (

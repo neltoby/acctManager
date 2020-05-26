@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountBalanceOutlined from '@material-ui/icons/AccountBalanceOutlined';
 import Typography from "@material-ui/core/Typography";
@@ -36,7 +36,6 @@ import isJson from '../isJson';
 
 const ColorCircularProgress = withStyles({
     root: {
-        // color: '#fff',
         color: '#00695c',
     },
 })(CircularProgress);
@@ -75,29 +74,29 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
+    const accttypes = ['Savings', 'Current']
+    const cheading = ['Date', 'Transaction Type', 'Amount', 'Bank', 'Account Debited', 'Account Name' ]
+    const dheading = ['Date', 'Transaction Type', 'Amount', 'Phone Number', 'Bank', 'Account Credited', 'Account Name']
+
 const Statement = (props) => {
     const {account, bank} = props
     const ab = useStyles()
     const {acctToken} = useGenkey(account)
     const id = useFindacct(account)
     const store = isJson(useSelector(state => state))
-    console.log(store.trans.statement instanceof Map)
-    console.log(store.trans.statement)
+
     const cre = (isJson(store.trans.statement))
     const cred = isJson(cre[id[0].Id])
     const credited = isJson(cred.credit) 
     const debited = isJson(cred.debit) 
     const accessMap =isJson(store.trans.statementAccess)
     const access = accessMap[id[0].Id]
-    console.log(access)
+
     const dispatch = useDispatch()
     const [key, setKey] = React.useState('')
     const [merge, setMerge] = React.useState(false)
     const [showKey, setShowKey] = React.useState(false)
     React.useEffect(() => {
-        console.log(accessMap)
-        console.log(access)
-        console.log(Object.keys(accessMap).includes(id[0].Id))
         if (accessMap[id[0].Id]){
             return
         }else{
@@ -136,9 +135,7 @@ const Statement = (props) => {
             }, 3000);
         }
     }
-    const accttypes = ['Savings', 'Current']
-    const cheading = ['Date', 'Transaction Type', 'Amount', 'Bank', 'Account Debited', 'Account Name' ]
-    const dheading = ['Date', 'Transaction Type', 'Amount', 'Phone Number', 'Bank', 'Account Credited', 'Account Name']
+    
     return (
         <>
             <ErrorBoundary>
@@ -305,16 +302,15 @@ const Statement = (props) => {
                 </Grid>
                 {merge ? 
                     <DialogModal open={merge} title='Choose account' close={() => setMerge(false)} type='statement'>
-                        <List>
+                        <List component='nav'>
                             {accttypes.map(acct => (
-                            <ListItem button onClick={() => handleListItemClick(acct)} key={acct}>
-                                <ListItemAvatar>
-                                    <Avatar className={ab.avatar}>
-                                        <AccountBalanceOutlined />
-                                    </Avatar>
-                                </ListItemAvatar>
+                                <ListItem button onClick={() => handleListItemClick(acct)} key={acct}>
+                                <ListItemIcon>
+                                  <AccountBalanceOutlined />
+                                </ListItemIcon>
+                                
                                 <ListItemText primary={acct} />
-                            </ListItem>
+                                </ListItem>                           
                             ))}
                         </List>
                     </DialogModal> : ''

@@ -179,10 +179,10 @@ const Home = () => {
             </Grid>
             <Grid container spacing={2} className={classes.roots}>
                 <Grid item container spacing={2} className={`${classes.roots} ${classes.contain}`}>
-                    <Grid item md={3} spacing={2}>
+                    <Grid item md={3}>
                         
                     </Grid>
-                    <Grid item md={6} xs={12} spacing={2}>
+                    <Grid item md={6} xs={12}>
                         <div className={classes.root}>
                             <Paper square elevation={0} className={classes.header}>
                                 <Typography className={classes.wid}>{tutorialSteps[activeStep].name}</Typography>
@@ -237,7 +237,7 @@ const Home = () => {
                         </div>
                         
                     </Grid>
-                    <Grid item md={3} spacing={2}>
+                    <Grid item md={3}>
                         
                     </Grid>
                 </Grid>

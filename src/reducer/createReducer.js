@@ -1,4 +1,3 @@
-import isJson  from '../isJson'
 import produce from 'immer'
 import { LOGGEDIN, LOGGEDOUT, FAILED_ACCT, STOP_LOADING, LOADING, RELEASE, 
         LOGGING_OUT, CANCEL_LOGOUT} from '../action'

@@ -307,7 +307,6 @@ const Transaction = (props) => {
             }
         }
     }
-    console.log(id)
     return (
         <>
         <ErrorBoundary>

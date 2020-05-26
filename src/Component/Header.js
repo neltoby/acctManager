@@ -10,11 +10,11 @@ import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
+import Avatar from '@material-ui/core/Avatar';
 import Home from '@material-ui/icons/HomeOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import LiveHelpOutlined from '@material-ui/icons/LiveHelpOutlined';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -136,7 +136,7 @@ export default function Header() {
   const dispatch = useDispatch()
   const history = useHistory()
   let action = store.home.side ? removeSideBar : displaySideBar ;
-  let src = `http://localhost:3000/${store.home.user.Pix}`
+  let src = store.home.user.Pix ? `http://localhost:3000/${store.home.user.Pix}` : ''
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const redirect = (val) => {
@@ -302,7 +302,7 @@ export default function Header() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <img src={src} width='35' height='35' alt={store.home.user.FirstName} className={classes.img} />
+              { store.home.user.Pix ? <img src={src} width='35' height='35' alt={store.home.user.FirstName} className={classes.img} /> : <Avatar><PersonIcon /></Avatar>}
             </IconButton>
             
           </div>
@@ -312,7 +312,7 @@ export default function Header() {
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
-              color="#ddd"
+              style={{color: "#ddd"}}
             >
               <MoreIcon />
             </IconButton>

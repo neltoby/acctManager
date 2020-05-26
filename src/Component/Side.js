@@ -1,22 +1,16 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom'
-import {makeStyles, withStyles} from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import { IconContext } from 'react-icons'
 import Grid from "@material-ui/core/Grid";
 import Button from '@material-ui/core/Button';
 import Typography from "@material-ui/core/Typography";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import UserBank from './UserBank'
 import GeneralInfo from './GeneralInfo'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
+import {removeSideBar} from '../action'
 import isJson from '../isJson';
-
-const ColorCircularProgress = withStyles({
-    root: {
-        color: '#00695c',
-    },
-})(CircularProgress);
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -81,10 +75,9 @@ const useStyles = makeStyles(theme => ({
 
 const Side = (props) => {
     const classes = useStyles();
+    const dispatch = useDispatch()
     const store = isJson(useSelector(state => state))
-    const [loading, setLoading] = React.useState(true);
     const home = isJson(store.home);
-    console.log(home)
     const content = home.bank.length ? <><Typography variant='body1' className={classes.bold}>
     YOUR {home.bank.length > 1 ? 'ACCOUNTS' : 'ACCOUNT'}
 </Typography><UserBank {...props}/></> : <GeneralInfo/> ;
@@ -93,19 +86,13 @@ const Side = (props) => {
     const direct = location => {
         history.push(location)
     }
-    React.useEffect(() => {
-        const interval = setTimeout(() => {
-                setLoading(false)
-            }, 1000);
-        return () => clearInterval(interval)       
-    })
     let contentProperty = (
         <>
             <div className={classes.but}>
                 <Button 
                     fullWidth={true} 
                     className={classes.invoice}
-                    onClick={() => direct('/open-account')}
+                    onClick={props.overlay ? () => {direct('/open-account'); dispatch(removeSideBar())} : () => direct('/open-account')}
                 >
                     OPEN AN ACCOUNT 
                 </Button>

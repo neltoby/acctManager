@@ -49,23 +49,22 @@ const SelectTime = (props) => {
             }else{
                 sent = `${num}${duration}`
             }
-            console.log(sent)
             dispatch(setExpiredTime(sent))
         }   
         dispatch(selectKeyTimeCancel())
         props.generate(sent)
     }
     return (
-        <Typography className={classes.root}>
+        <Typography component='div' className={classes.root}>
             <Typography className={classes.wid}>
                 Select TBT key duration
             </Typography>
-            <Typography className={classes.row}>
+            <Typography component='div' className={classes.row}>
                 <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
-                    <Typography className={classes.value}>
+                    <Typography component='div' className={classes.value}>
                         <TextField required value={num} onChange={handleNum} id="standard-basic" label="Number" />
                     </Typography>
-                    <Typography className={classes.option}>               
+                    <Typography component='div' className={classes.option}>               
                         <FormControl variant="outlined" className={classes.formControl}>
                             <InputLabel id="time">Duration</InputLabel>
                             <Select
@@ -85,7 +84,7 @@ const SelectTime = (props) => {
                             </Select>
                         </FormControl>               
                     </Typography>
-                    <Typography className={classes.submit}>
+                    <Typography component='div' className={classes.submit}>
                         <Button
                             variant="contained"
                             size="medium"

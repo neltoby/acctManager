@@ -46,7 +46,6 @@ const Allowed = (props) => {
     React.useEffect(() => {
         confirmKey()
     }, [country, bank, acct])
-    console.log(acct)
     return (
         <>
             <AllowedSide bank={bank} acct={acct}/>

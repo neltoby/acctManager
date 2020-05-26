@@ -89,6 +89,9 @@ const SignUpContent = (props) => {
     const handleMouseDownPassword = event => {
         event.preventDefault();
     };
+    const onChange = (e) => {
+        props.handleInputChange(e)
+    }
     return (
         <>
             <Grid container spacing={1} className={classes.margin}>
@@ -107,7 +110,7 @@ const SignUpContent = (props) => {
                         type='text'
                         name='firstname'
                         value={props.inputs.firstname}
-                        onChange={props.handleInputChange}
+                        onChange={onChange}
                         placeholder='FirstNAme *'
                         InputProps={{
                             endAdornment: (
@@ -141,7 +144,7 @@ const SignUpContent = (props) => {
                         type='text'
                         name='lastname'
                         value={props.inputs.lastname}
-                        onChange={props.handleInputChange}
+                        onChange={onChange}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -175,7 +178,7 @@ const SignUpContent = (props) => {
                         type='email'
                         name='email'
                         value={props.inputs.email}
-                        onChange={props.handleInputChange}
+                        onChange={onChange}
                         onBlur={() => props.validator.current.showMessageFor('email')}
                         InputProps={{
                             endAdornment: (
@@ -210,7 +213,7 @@ const SignUpContent = (props) => {
                         type='number'
                         name='mobile'
                         value={props.inputs.mobile}
-                        onChange={props.handleInputChange}
+                        onChange={onChange}
                         onBlur={() => props.validator.current.showMessageFor('mobile')}
                         InputProps={{
                             endAdornment: (
@@ -246,7 +249,7 @@ const SignUpContent = (props) => {
                         type={ showPassword ? 'text' :'password' }
                         name='password'
                         value={props.inputs.password}
-                        onChange={props.handleInputChange}
+                        onChange={onChange}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">

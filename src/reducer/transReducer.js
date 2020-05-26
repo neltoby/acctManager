@@ -42,7 +42,6 @@ const initialState = {
 }
 
 export default function transReducer(state = initialState, action) {
-    console.log(state.statement)
     switch (action.type){  
         case SET_EXPIRED_TIME: {
             return produce(state, draft => {	
@@ -77,21 +76,18 @@ export default function transReducer(state = initialState, action) {
         case STATEMENT: {
             return produce(state, draft => {
                 let id = action.payload.bid	
-                console.log(id)
                 draft.statement[id] = action.payload 	    
 			})
         }
         case STATEMENT_ACCESS: {
             return produce(state, draft => {
                 let id = action.payload
-                console.log(id)
                 draft.statementAccess[id] = true    
 			})
         }
         case STATEMENT_DENIED: {
             return produce(state, draft => {	
                 let id = action.payload
-                console.log(id)
                 draft.statementAccess[id] = false	     
 			})
         }

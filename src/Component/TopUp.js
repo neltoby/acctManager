@@ -21,7 +21,7 @@ import TopUpInput from './TopUpInput'
 import SelectAcct from './SelectAcct'
 import useFindacct from './useFindacct';
 import useGenkey from './useGenkey'
-import {confirmKey, topUp, transEnd, transLoading, transErr, transLoadingStop, 
+import {topUp, transEnd, transLoading, transErr, transLoadingStop, 
     mergedSaving, mergedSavingFalse} from '../b_action'
 import {useSelector, useDispatch} from 'react-redux'
 import Cookies from 'universal-cookie'
@@ -29,16 +29,11 @@ import Cookies from 'universal-cookie'
 const cookies = new Cookies();
 const ColorCircularProgress = withStyles({
     root: {
-        // color: '#fff',
         color: '#00695c',
     },
 })(CircularProgress);
 
 const useStyles = makeStyles(theme => ({
-    overflow: {
-        // display: 'flex',
-        // flexGrow: 1,
-    },
     root: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -100,7 +95,7 @@ const TopUp = (props) => {
     const ab = useStyles()
     const id = useFindacct(account)
     const store = useSelector(state => state)
-    const {confirmKey, acctToken} = useGenkey(account)
+    const {acctToken} = useGenkey(account)
     const [key, setKey] = React.useState('')
     const [showKey, setShowKey] = React.useState(false)
     const [inputs, setInputs] = React.useState([{num: '', amt: '', net: '', err: ''}])
@@ -119,9 +114,7 @@ const TopUp = (props) => {
     const endTransaction = () => {
         dispatch(transEnd())
     }
-    const goBack = () => {}
     const selectAcct = (val) => {
-        console.log(val)
         const obj = {bank: bank, type: id[0].Type, bkid: id[0].Id, key: key,
             selected: val, input: inputs}
         dispatch(mergedSavingFalse())
@@ -158,7 +151,6 @@ const TopUp = (props) => {
         if (err) {
             setInputs(newInputs)
             err = false
-            console.log(newInputs)
             setTimeout(() => {
                 removeErr()
             }, 4000);
@@ -170,7 +162,6 @@ const TopUp = (props) => {
                 }else{
                     let obj = {bank: bank, type: id[0].Type, bkid: id[0].Id, acct: account, input: inputs}
                     dispatch(topUp(obj, acctToken))
-                    console.log(obj)
                 }
             }else{
                 dispatch(transLoading())
@@ -206,10 +197,6 @@ const TopUp = (props) => {
         newInputs.splice(i, 1)        
         setInputs(newInputs)
     }
-    // const endTransaction = () => {
-    //     dispatch(transEnd())
-    // }
-    console.log(id)
     return (
         <>
             <ErrorBoundary>
@@ -283,12 +270,12 @@ const TopUp = (props) => {
                     </Grid>
                 
                 {store.trans.transLoading ? <TransitionsModal open={store.trans.transLoading}>{store.trans.transErr ? 
-                    <Typography variant="body2" className={ab.bodyBold}>
+                    <Typography component='div' variant="body2" className={ab.bodyBold}>
                         <p className={ab.failed}>Transaction Failed!</p>
                         {store.trans.transErr}
                     </Typography> :  
                     store.trans.success ?
-                    <Typography variant="body2" className={ab.bodyBold}>
+                    <Typography component='div' variant="body2" className={ab.bodyBold}>
                         <p className={ab.failed}>Transaction was successful!</p> 
                         <Button className={ab.end_trans} fullWidth onClick={endTransaction}> Finished</Button>
                     </Typography> : 

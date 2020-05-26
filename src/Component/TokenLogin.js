@@ -12,7 +12,6 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import TextField from "@material-ui/core/TextField";
 import {ButtonFinish} from "./ButtonCollection";
-import useForm from "./useForm";
 import isJson from '../isJson';
 import { retrieveToken } from '../action'
 
@@ -66,26 +65,32 @@ const TokenLogin = () => {
     const classes = useStyles();
     const location = useLocation()
     const history = useHistory()
+    const [inputs, setInputs] = React.useState({email: '', password: ''})
     const [showPassword, setValues] = React.useState(false);
     const handleClickShowPassword = () => {
         setValues(!showPassword );
     };
     let store = isJson(useSelector(state => state))
-    console.log(store)
     const dispatch = useDispatch()
     const handleMouseDownPassword = event => {
         event.preventDefault();
     };
-    const submitForm = (e) => {
-            let formData = {email: inputs.email, password: inputs.password};           
-            // formData.append('email', inputs.email);
-            // formData.append('password', inputs.password);           
-            dispatch(retrieveToken(formData,history,location))
+    const handleInputChange = e => {
+        e.persist()
+        setInputs(inputs => ({
+            ...inputs,
+            [e.target.name]: e.target.value
+        }))
     }
-    const {inputs, handleInputChange, handleSubmit} = useForm(submitForm)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let formData = {email: inputs.email, password: inputs.password};                     
+        dispatch(retrieveToken(formData,history,location))
+    }
     const error = store.create.name === 'email' ? <Typography color='error' className={classes.icon} variant="caption" gutterBottom>
         {store.create.error}
     </Typography>: '' ;
+
     return (
         <>
             <form onSubmit={handleSubmit} >

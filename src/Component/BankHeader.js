@@ -11,7 +11,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import useTime from './useTime';
 import useFindacct from './useFindacct'
 import isJson from '../isJson'
-import { topUp, callTransType } from '../b_action';
+import { callTransType } from '../b_action';
 
 const useStyles = makeStyles(theme => ({
     font: {
@@ -53,7 +53,7 @@ const BankHeader = (props) => {
     const match = useRouteMatch()
     const {bank,account} = props
     const id = useFindacct(account)
-    const {acctToken} = useGenkey(account)
+    // const {acctToken} = useGenkey(account)
     const bnk = bank.split(' ').join('-')
     const url = `/bank/Nigeria/${bnk}/${account}`
     const statement = useRouteMatch(`${url}/statement`)

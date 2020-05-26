@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { createAcct } from '../action'
 import { useHistory } from 'react-router-dom'
@@ -13,8 +13,7 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
-import {ButtonFinish, ButtonNext} from "./ButtonCollection";
-import useForm from './useForm';
+import {ButtonFinish, ButtonNext} from "./ButtonCollection"
 import SimpleReactValidator from 'simple-react-validator';
 import ErrorBoundary from "./ErrorBoundary";
 import isJson from '../isJson';
@@ -75,6 +74,7 @@ function getSteps() {
 const SignUp = () => {
     const classes = useStyles();
     const [, forceUpdate] = React.useState();
+    const [inputs, setInputs] = React.useState({firstname: '',lastname: '',email: '',mobile: '',password: '',profile: '', files: ''})
     let history = useHistory()
     const validator = React.useRef(new SimpleReactValidator({autoForceUpdate: {forceUpdate: forceUpdate}}));
     const [formError, setError] = React.useState(false);
@@ -82,12 +82,9 @@ const SignUp = () => {
         history.push('/login')
     }
     let store = isJson(useSelector(state => state))
-    console.log(store.create.login)
-    console.log(store)
     const dispatch = useDispatch()
     const submitForm = (e) => {
-        // e.preventDefault();
-        console.log(validator.current.allValid());
+        e.preventDefault();
         if (validator.current.allValid()) {
             alert('You submitted the form and stuff!');
             let formData = new FormData();
@@ -103,18 +100,39 @@ const SignUp = () => {
             setTimeout(() => {
                 setError(false) 
             }, 3000);
-            console.log('error in the form');
-            console.log(validator.current.showMessages());
         }
 
     }
-    const {inputs, handleInputChange, handleSubmit, handleFileCancel} = useForm(submitForm)
+    const handleInputChange = useCallback((e) => {
+        e.persist()
+        if (e.target.name === 'profile') {
+            setInputs(inputs => ({
+                ...inputs,
+                files: e.target.files[0],
+                profile: e.target.value,
+            }))
+        }else {
+            setInputs(inputs => ({
+                ...inputs,
+                [e.target.name]: e.target.value,
+            }))
+        }               
+    }, [] )
+    const handleFileCancel = useCallback((name) => {
+        setInputs(inputs => ({
+            ...inputs,
+            files: '',
+            profile: ''
+        }))
+    }, [] )
+    const inputValue = useMemo(() => inputs, [inputs])
+    // const {inputs, handleInputChange, handleSubmit, handleFileCancel} = useForm(submitForm)
     function getStepContent(step) {
         switch (step) {
             case 0:
                 return (
                     <ErrorBoundary>
-                        <SignUpContent inputs={inputs} handleInputChange={handleInputChange} validator={validator}/>
+                        <SignUpContent inputs={inputValue} handleInputChange={handleInputChange} validator={validator}/>
                     </ErrorBoundary>
                     );
             case 1:
@@ -135,23 +153,20 @@ const SignUp = () => {
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
 
-    const handleNext = () => {
+    const handleNext = useCallback(() => {
         // if (validator.current.fieldValid('firstname') && validator.current.fieldValid('lastname')
         //     && validator.current.fieldValid('email') )
         setActiveStep(prevActiveStep => prevActiveStep + 1);
-    };
+    }, [])
 
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         setActiveStep(prevActiveStep => prevActiveStep - 1);
-    };
+    }, []);
 
-    const handleReset = () => {
-        setActiveStep(0);
-    };
     return (
         <>
                 <Grid item xs={12} sm={5} className={classes.port}>
-                    <form onSubmit={handleSubmit} encType="multipart/form-data" >
+                    <form onSubmit={submitForm } encType="multipart/form-data" >
                     <Paper className={classes.paper} square={true}>
                         <Grid container spacing={1}>
                             <Grid item xs={12} sm={12}>
@@ -169,7 +184,7 @@ const SignUp = () => {
                                         </Typography>
                                     </StepLabel>
                                     <StepContent>
-                                        <Typography>{getStepContent(index)}</Typography>
+                                        <Typography component='div'>{getStepContent(index)}</Typography>
                                         <div className={classes.actionsContainer}>
                                             <div>
                                                 <Button
@@ -185,14 +200,12 @@ const SignUp = () => {
                                     </StepContent>
                                 </Step>
                             ))}
-                            <Grid container spacing={1} className={classes.second}>
-                                <Grid item sm={2}>
-
-                                </Grid>
+                            
+                        </Stepper>
+                        <Grid container spacing={1}>
+                                <Grid item sm={2} xs={2} />
                                 <Grid item container xs={12} sm={8}>
-                                    <Grid item xs={2} sm={2}>
-
-                                    </Grid>
+                                    <Grid item xs={2} sm={2} />
                                     <Grid item xs={10} sm={10}>
                                         <Button 
                                             fullWidth={true} 
@@ -202,19 +215,10 @@ const SignUp = () => {
                                             Login
                                         </Button>
                                     </Grid>
+                                    <Grid item xs={2} sm={2} />
                                 </Grid>
+                                <Grid item xs={2} sm={2} />
                             </Grid>
-                        </Stepper>
-                        
-                            {activeStep === steps.length && (
-                                <Paper square elevation={0} className={classes.resetContainer}>
-                                    <Typography>All steps completed - you&apos;re finished</Typography>
-                                    <Button onClick={handleReset} className={classes.button}>
-                                        Reset
-                                    </Button>
-                                </Paper>
-                            )}
-                        
                     </Paper>
                     </form>
                 </Grid>

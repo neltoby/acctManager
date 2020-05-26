@@ -8,7 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
+// import IconButton from '@material-ui/core/IconButton';
 import {removeSideBar} from '../action'
 
 const useStyles = makeStyles(theme => ({
@@ -39,6 +39,7 @@ const UserBank = (props) => {
                         let loc = item.Bank.replace(/\s/g, '-');
                         return(
                             <ListItem
+                                key={`${item}${i}`}
                                 button
                                 onClick={props.overlay ? () => {history.push(`/bank/${item.Country}/${loc}/${item.Acct}`); overlayFxn();} : () => history.push(`/bank/${item.Country}/${loc}/${item.Acct}`)}
                             >

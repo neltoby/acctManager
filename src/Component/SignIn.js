@@ -16,7 +16,6 @@ import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import {ButtonFinish} from "./ButtonCollection";
 import Divider from '@material-ui/core/Divider';
-import useForm from "./useForm";
 import isJson from '../isJson';
 
 const CssTextField = withStyles({
@@ -116,6 +115,7 @@ const useStyles = makeStyles(theme => ({
 const SignIn = () => {
     const classes = useStyles();
     let history = useHistory()
+    const [inputs, setInputs] = React.useState({email: '', password: ''})
     const [showPassword, setValues] = React.useState(false);
     const handleClickShowPassword = () => {
         setValues(!showPassword );
@@ -129,11 +129,17 @@ const SignIn = () => {
     const handleMouseDownPassword = event => {
         event.preventDefault();
     };
-    const submitForm = (e) => {
-            let formData = {email: inputs.email, password: inputs.password}                      
-            dispatch(loginAcct(formData,history))
+    const handleInputChange = (e) => {
+        setInputs(inputs => ({
+            ...inputs,
+            [e.target.name]: e.target.value
+        }))
     }
-    const {inputs, handleInputChange, handleSubmit} = useForm(submitForm)
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        let formData = {email: inputs.email, password: inputs.password}                      
+        dispatch(loginAcct(formData,history))
+    }
     return (
         <>
             <Grid item xs={12} sm={5} className={classes.port}>

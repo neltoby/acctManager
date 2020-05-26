@@ -35,21 +35,23 @@ const InRoute = () => {
     return (
         <div className={ab.broot}>
             <Header/>
-            {!store.token.tokenError ? !store.home.loading ?
-                <Switch>
-                    <Route exact path='/'><Suspense fallback={<h4>Loading ...</h4>}><Home /></Suspense></Route>
-                    <Route path='/profile'><Suspense fallback={<h4>Loading ...</h4>}><Profile /></Suspense></Route>
-                    <Route path='/bank/'><Suspense fallback={<h4>Loading ...</h4>}><Bank /></Suspense></Route>                  
-                    <Route path='/open-account'><Suspense fallback={<h4>Loading ...</h4>}><OpenAccount /></Suspense></Route>
-                    <Redirect from = '/login' to = '/' />
-                    <Route path='/*'><Suspense fallback={<h4>Loading ...</h4>}><PageNotFind /></Suspense></Route>
-                </Switch>
-                :
-                <h4> Loading Page</h4> 
-                : <h4>Please login</h4>
-            }
-            {displayModal}
-            {logout}
+            <ErrorBoundary>
+                {!store.token.tokenError ? !store.home.loading ?
+                    <Switch>
+                        <Route exact path='/'><Suspense fallback={<h4>Loading ...</h4>}><Home /></Suspense></Route>
+                        <Route path='/profile'><Suspense fallback={<h4>Loading ...</h4>}><Profile /></Suspense></Route>
+                        <Route path='/bank/'><Suspense fallback={<h4>Loading ...</h4>}><Bank /></Suspense></Route>                  
+                        <Route path='/open-account'><Suspense fallback={<h4>Loading ...</h4>}><OpenAccount /></Suspense></Route>
+                        <Redirect from = '/login' to = '/' />
+                        <Route path='/*'><Suspense fallback={<h4>Loading ...</h4>}><PageNotFind /></Suspense></Route>
+                    </Switch>
+                    :
+                    <h4> Loading Page</h4> 
+                    : <h4>Please login</h4>
+                }
+                {displayModal}
+                {logout}
+            </ErrorBoundary>
         </div>
     );
 };

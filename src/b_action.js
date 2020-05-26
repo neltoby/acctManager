@@ -222,7 +222,6 @@ export const topUp = (obj, acct) => {
         return axios.post('http://localhost:3000/top-up', obj, {headers: {'x-key': cookies.get(acct), 'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){  
                     if(res.data.success){
                         setTimeout(() => {
@@ -250,13 +249,7 @@ export const topUp = (obj, acct) => {
                             dispatch(transLoadingStop())
                             dispatch(transErr(''))
                         }, 2000);
-                        // cookies.remove('tr_key',{ path: '/'})
-                        // console.log('tr_key removed')
-                        // dispatch(generateKey({})) 
-                    }
-                    // else{
-                    //     dispatch(generateKey(isJson(res.data.res))) 
-                    // }         
+                    }        
                                
                 }else{
                     if(res.data.type === 'login' && !res.data.tok){
@@ -287,7 +280,6 @@ export const recontinueTrans = (formData, acct) => {
         return axios.post('http://localhost:3000/contd-trans', formData, {headers: {'x-key': cookies.get(acct), 'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){  
                     if(res.data.success){
                         setTimeout(() => {
@@ -324,9 +316,7 @@ export const recontinueTrans = (formData, acct) => {
                         }, 3000);
                     }
                 }
-                // dispatch(stopLoad())
             }, (error) => {
-                console.log(error.response)
                 dispatch(transErr('Unable to connect to server'))
                 setTimeout(() => {
                     dispatch(transLoadingStop())
@@ -347,7 +337,6 @@ export const confirmTrans = (formData, acct) => {
         return axios.post('http://localhost:3000/process-trans', formData, {headers: {'x-key': cookies.get(acct), 'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){            
                     if(res.data.resMsg){
                         dispatch(transErr(res.data.resMsg))
@@ -388,18 +377,13 @@ export const confirmTrans = (formData, acct) => {
                         }, 2000);
                     }
                 }
-                // dispatch(stopLoad())
             }, (error) => {
-                console.log(error.response)
                 let payload = `${error.response.status}: ${error.response.statusText}` || 'Unable to connect to server'
                 dispatch(transErr(payload))
                 setTimeout(() => {
                     dispatch(transLoadingStop())
                     dispatch(transErr(''))
                 }, 2000);
-                // let payload = error.response.status || 'Could not connect to server'
-                // dispatch(errTrue(payload))
-                // dispatch(stopLoad())
         });
     };
 }
@@ -409,12 +393,9 @@ export const confirmKeys = (obj, acct) => {
         return axios.post('http://localhost:3000/confirm-key', obj, {headers: {'x-key': cookies.get(acct), 'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){  
                     if(res.data.expMsg){
-                        cookies.remove(acct,{ path: '/'})
-                        console.log('tr_key removed')
-                        // dispatch(generateKey({})) 
+                        cookies.remove(acct,{ path: '/'}) 
                     }else if(res.data.nonMsg) {
                         cookies.remove(acct,{ path: '/'})
                         dispatch(generateKey({}))
@@ -429,28 +410,20 @@ export const confirmKeys = (obj, acct) => {
                     }
                 }
             }, (error) => {
-                // dispatch(transErr('Unable to connect to server'))
-                // setTimeout(() => {
-                //     dispatch(transLoadingStop())
-                // }, 3000);
         });
     };
 }
 export const genKey = (id,expires,acct) => {
     return function(dispatch, getState) {
         dispatch(genKeyLoading())
-        console.log(id.bid)
         dispatch(statementDenied(id.bid))
         dispatch(statement({bid: id.bid, credit: [], debit: []}))
         return axios.post('http://localhost:3000/gen-key', {id: id, expires: expires}, 
         {headers: {'x-token': cookies.get('login')}})
             .then((response) => {
                 let res = isJson(response);
-                console.log(res)
                 if(res.data.status){            
                     dispatch(generateKey(isJson(res.data.res)))
-                    // let tokename = acct
-                    // cookies.set('tr_key', res.data.tok, { path: '/'})
                     cookies.set(acct, res.data.tok, { path: '/'})
                 }else{
                     if(res.data.type === 'login' && !res.data.tok){
@@ -461,7 +434,6 @@ export const genKey = (id,expires,acct) => {
                     dispatch(keyStopLoading())
                 }, 3000);               
             }, (error) => {
-                console.log(error.response)
                 setTimeout(() => {
                     dispatch(keyStopLoading())
                 }, 3000); 

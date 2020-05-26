@@ -38,13 +38,9 @@ const DialogModal = (props) => {
         >
             <DialogTitle id="scroll-dialog-title">{title}</DialogTitle>
             <DialogContent dividers={scroll === 'paper'}>
-                <DialogContentText
-                    id="scroll-dialog-description"
-                    ref={descriptionElementRef}
-                    tabIndex={-1}
-                >
+                
                     {props.children}
-                </DialogContentText>
+                
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">

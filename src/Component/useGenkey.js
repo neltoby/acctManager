@@ -59,16 +59,10 @@ const useGenkey = (acct) => {
     const id = useFindacct(acct)
     const bank = id[0].Bank.split(' ').join('_')
     const acctToken = `${bank}${acct}`
-    // React.useEffect(() => {
-    //     console.log(id)
-    //     confirmKey()
-    // },[id])
     const generate = (time) => {
         if(id.length){
             try{
                 let obj={uid: id[0].User, bid: id[0].Id}
-                // let time = store.trans.expires
-                console.log(time)
                 dispatch(genKey(obj,time, acctToken))
             }catch(e){
                 console.log(e)

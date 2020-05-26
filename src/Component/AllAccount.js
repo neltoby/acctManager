@@ -1,19 +1,11 @@
 import React from 'react';
-import {makeStyles, withStyles} from "@material-ui/core/styles";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import isJson from '../isJson';
 import Restricted from './Restricted'
 import Allowed from './Allowed'
-
-const ColorCircularProgress = withStyles({
-    root: {
-        color: '#00695c',
-    },
-})(CircularProgress);
 
 const useStyles = makeStyles(theme => ({
     root: {

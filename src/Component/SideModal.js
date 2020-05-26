@@ -1,13 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grow from '@material-ui/core/Grow';
 import Slide from '@material-ui/core/Slide';
-// import IconButton from "@material-ui/core/IconButton";
-// import Backdrop from '@material-ui/core/Backdrop';
 import { FaRegTimesCircle } from 'react-icons/fa'
 import {IconContext} from "react-icons";
-// import Fade from '@material-ui/core/Fade';
-
 
 const useStyles = makeStyles(theme => ({
     overlay: {
@@ -36,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 
 export default function SideModal(props) {
     const classes = useStyles();
-    // const dispatch = useDispatch();
     return (
         <Slide direction="right" in={true} mountOnEnter unmountOnExit>
             <div className={classes.overlay}>

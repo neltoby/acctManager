@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     //     },
     // },
     margin: {
-        marginTop: '1rem',
-        marginBottom: '2rem',
+        marginTop: '0.4rem',
+        marginBottom: '0rem',
         justifyContent: 'center',
     },
     bottom: {
@@ -44,7 +44,6 @@ const UploadProfile = (props) => {
             props.handleFileCancel('profile')
         }
     },[])
-    console.log(img);
     let display = props.inputs.files ? URL.createObjectURL(props.inputs.files) : img ;
     let cancelButton = props.inputs.profile ? <Grid container spacing={1} className={classes.divInfo}>
         <Grid item xs={10}>
@@ -76,11 +75,13 @@ const UploadProfile = (props) => {
                         value={props.inputs.profile}
                         onChange={props.handleInputChange}
                     />
-                    <label htmlFor="contained-button-file">
-                        <Button variant="contained" color="primary" component="span">
-                            Upload
-                        </Button>
-                    </label>
+                    <Typography  component='div'>
+                        <label htmlFor="contained-button-file">
+                            <Button variant="contained" color="primary" component="span">
+                                Upload
+                            </Button>
+                        </label>
+                    </Typography>
                     <Typography variant="caption" className={classes.color}>
                         {props.validator.current.message('profile', props.inputs.profile, 'required')}
                     </Typography>
